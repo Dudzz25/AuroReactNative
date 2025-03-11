@@ -2,6 +2,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
+import { Redirect, router } from "expo-router";
 
 import { images } from "../constants";
 import CustomButton from "../components/CustomButton";
@@ -40,7 +41,7 @@ const App = () => {
           </Text>
           <CustomButton
             title="Continue with Email"
-            handlePress={() => {}}
+            handlePress={() => router.push("/sign-in")}
             containerStyle="w-full mt-7"
           />
         </View>
