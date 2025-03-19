@@ -30,7 +30,11 @@ const SearchInput = ({ initialQuery }) => {
           else router.push(`/search/${query}`);
         }}
       >
-        <Image source={icons.search} className="w-5 h-5" resizeMode="contain" />
+        <Image
+          source={icons.search}
+          className="w-5 h-5 mr-5"
+          resizeMode="contain"
+        />
       </TouchableOpacity>
     </View>
   );

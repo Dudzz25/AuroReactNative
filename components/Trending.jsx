@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import * as Animatable from "react-native-animatable";
-import { ResizeMode, Video } from "expo-av";
-import { VideoView } from "expo-video";
+// import { ResizeMode, Video } from "expo-av";
+import { VideoView, useVideoPlayer } from "expo-video";
 import { icons } from "../constants";
 
 const zoomIn = {
@@ -31,9 +31,14 @@ const zoomOut = {
 };
 
 const TrendingItems = ({ activeItem, item }) => {
-  // console.log(item.video);
   const [play, setPlay] = useState(false);
   // console.log(item.video);
+
+  const player = useVideoPlayer(item.video, (player) => {
+    player.loop = false;
+    // player.play();
+  });
+
   return (
     <Animatable.View
       className="mr-5"
@@ -42,21 +47,24 @@ const TrendingItems = ({ activeItem, item }) => {
     >
       {play ? (
         <VideoView
-          player={{ uri: item.video }} // Vimeo embed URL
-          className="w-52 h-72 rounded-[33px] mt-3 bg-white/10"
-          useNativeControls // Show native video controls
-          shouldPlay={play} // Auto-play the video
-          onPlaybackStatusUpdate={(status) => {
-            if (status.didJustFinish) {
-              setPlay(false); // Stop playback once the video finishes
-            }
+          style={{
+            height: 270,
+            width: 200,
+          }}
+          player={player}
+          // nativeControls={false}
+          onTouchEnd={() => {
+            setPlay(false);
           }}
         />
       ) : (
         <TouchableOpacity
           className="relative flex justify-center items-center"
           activeOpacity={0.7}
-          onPress={() => setPlay(true)}
+          onPress={() => {
+            setPlay(true);
+            player.play();
+          }}
         >
           <ImageBackground
             source={{
@@ -78,7 +86,7 @@ const TrendingItems = ({ activeItem, item }) => {
 };
 
 const Trending = ({ posts }) => {
-  const [activeItem, setActiveItem] = useState(posts[0]);
+  const [activeItem, setActiveItem] = useState(posts[1]);
 
   const viewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems.length > 0) {
